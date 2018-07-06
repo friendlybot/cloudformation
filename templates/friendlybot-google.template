@@ -1,0 +1,56 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Gmail MX configuration for Friendlybot.io",
+  "Parameters": {
+    "DomainName": {
+      "Type": "String",
+      "Default": "friendlybot.io",
+      "Description": "Domain name, without www.",
+      "AllowedPattern": "^[a-z0-9.]*$"
+    },
+    "GoogleSiteVerification": {
+      "Type": "String",
+      "Default": "wS2AcUPDXWDBkXAdYdr212zLKyOmxWwZmcE2UxocH2o",
+      "Description": "Google site verification identifier from admin.google.com when adding the domain.",
+      "AllowedPattern": "^[A-Za-z0-9]*$"
+    }
+  },
+  "Resources": {
+    "SiteVerificationRecord": {
+      "Type": "AWS::Route53::RecordSet",
+      "Properties": {
+        "Type": "TXT",
+        "ResourceRecords": [
+          {
+            "Fn::Join": [ "",
+              [
+                "\"google-site-verification=",
+                { "Ref": "GoogleSiteVerification" },
+                "\""
+              ]
+            ]
+          }
+        ],
+        "TTL": 300,
+        "HostedZoneName": { "Fn::Join": [ "", [ { "Ref": "DomainName" }, "." ] ] },
+        "Name": { "Ref": "DomainName" }
+      }
+    },
+    "MXRecord": {
+      "Type": "AWS::Route53::RecordSet",
+      "Properties": {
+        "Type": "MX",
+        "ResourceRecords": [
+          "1 ASPMX.L.GOOGLE.COM.",
+          "5 ALT1.ASPMX.L.GOOGLE.COM.",
+          "5 ALT2.ASPMX.L.GOOGLE.COM.",
+          "10 ASPMX2.GOOGLEMAIL.COM.",
+          "10 ASPMX3.GOOGLEMAIL.COM."
+        ],
+        "TTL": 300,
+        "HostedZoneName": { "Fn::Join": [ "", [ { "Ref": "DomainName" }, "." ] ] },
+        "Name": { "Ref": "DomainName" }
+      }
+    }
+  }
+}

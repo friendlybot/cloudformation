@@ -1,0 +1,40 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Configure SSL Certificate for domain. Should be ran against us-east-1 only, due to CloudFront use limitation.",
+  "Parameters": {
+    "DomainName": {
+      "Type": "String",
+      "Default": "friendlybot.io",
+      "Description": "Domain name, without www.",
+      "AllowedPattern": "^[a-z0-9.]*$"
+    },
+    "DomainNameWWW": {
+      "Type": "String",
+      "Default": "www.friendlybot.io",
+      "Description": "Domain Name, with www",
+      "AllowedPattern": "^www.[a-z0-9.]*$"
+    }
+  },
+  "Resources": {
+    "Certificate": {
+      "Type": "AWS::CertificateManager::Certificate",
+      "Properties": {
+        "DomainName": { "Ref": "DomainName" },
+        "DomainValidationOptions": [
+          {
+            "DomainName": { "Ref": "DomainName" },
+            "ValidationDomain": { "Ref": "DomainName" }
+          }
+        ],
+        "SubjectAlternativeNames": [ { "Fn::Join": [ "", [ "*.", { "Ref": "DomainName" } ] ] } ]
+      }
+    }
+  },
+  "Outputs": {
+    "Certificate": {
+      "Description" : "The Ref of the ACM Certificate",
+      "Value" :  { "Ref" : "Certificate" },
+      "Export" : { "Name" : {"Fn::Sub": "${AWS::StackName}-Certificate" }}
+    }
+  }
+}
