@@ -30,6 +30,7 @@ Constraints:
 * CloudFront: currently only able to use certificates from the `us-east-1`
   region, so the Certificate must be managed there.
 
+Run:
 * First, ensure emails to admin@domain go to a mailbox you control.
 * Run the stack, it will pause at in-progess stage.
 * Check email, click the verification link to confirm ownership of the domain for ACM.
