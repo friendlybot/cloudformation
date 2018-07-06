@@ -18,7 +18,7 @@ through adding a TXT DNS record to the zone.
 user@host:cloudformation$ aws cloudformation deploy \
   --template-file=./templates/friendlybot-google.template \
   --stack-name=friendlybot-google \
-  --parameter-overrides GoogleSiteVerification=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  --parameter-overrides GoogleSiteVerification=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx \
   --region=us-east-2
 ```
 
